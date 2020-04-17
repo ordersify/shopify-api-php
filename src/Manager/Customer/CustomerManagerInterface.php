@@ -103,5 +103,5 @@ interface CustomerManagerInterface extends ManagerInterface
      *
      * @return \Slince\Shopify\Manager\Order\Order[]
      */
-    public function orders($id);
+    public function orders($id, $query = []);
 }
