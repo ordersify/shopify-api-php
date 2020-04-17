@@ -75,9 +75,9 @@ class CustomerManager extends GeneralCurdable implements CustomerManagerInterfac
     /**
      * {@inheritdoc}
      */
-    public function orders($id)
+    public function orders($id, $query = [])
     {
-        $data = $this->client->get('customers/'.$id.'/orders');
+        $data = $this->client->get('customers/'.$id.'/orders', $query);
 
         return $this->createMany(reset($data), Order::class);
     }
