@@ -2,6 +2,10 @@ Slince\Shopify\Manager\Order\DiscountApplication:
     properties:
         type:
             type: string
+        title:
+            type: string
+        description:
+            type: string
         value:
             type: string
         valueType:

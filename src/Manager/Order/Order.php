@@ -53,6 +53,11 @@ class Order extends Model
     protected $number;
 
     /**
+     * @var float
+     */
+    protected $totalTipReceived;
+
+    /**
      * @var string
      */
     protected $note;
@@ -101,6 +106,11 @@ class Order extends Model
      * @var string
      */
     protected $currency;
+
+    /**
+     * @var string
+     */
+    protected $presentmentCurrency;
 
     /**
      * @var string
@@ -331,6 +341,51 @@ class Order extends Model
      * @var Customer
      */
     protected $customer;
+
+    /**
+     * @var string
+     */
+    protected $customerLocale;
+
+    /**
+     * @return string
+     */
+    public function getCustomerLocale()
+    {
+        return $this->customerLocale;
+    }
+
+    /**
+     * @param string $customerLocale
+     *
+     * @return Order
+     */
+    public function setCustomerLocale($customerLocale)
+    {
+        $this->customerLocale = $customerLocale;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTotalTipReceived()
+    {
+        return $this->totalTipReceived;
+    }
+
+    /**
+     * @param string $totalTipReceived
+     *
+     * @return Order
+     */
+    public function setTotalTipReceived($totalTipReceived)
+    {
+        $this->totalTipReceived = $totalTipReceived;
+
+        return $this;
+    }
 
     /**
      * @return string
@@ -641,6 +696,26 @@ class Order extends Model
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPresentmentCurrency()
+    {
+        return $this->presentmentCurrency;
+    }
+
+    /**
+     * @param string $presentmentCurrency
+     *
+     * @return Order
+     */
+    public function setPresentmentCurrency($presentmentCurrency)
+    {
+        $this->presentmentCurrency = $presentmentCurrency;
 
         return $this;
     }

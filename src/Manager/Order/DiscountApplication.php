@@ -23,6 +23,16 @@ class DiscountApplication extends Model
     /**
      * @var string
      */
+    protected $title;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
+     * @var string
+     */
     protected $value;
 
     /**
@@ -66,6 +76,46 @@ class DiscountApplication extends Model
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return DiscountApplication
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return DiscountApplication
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
 
         return $this;
     }

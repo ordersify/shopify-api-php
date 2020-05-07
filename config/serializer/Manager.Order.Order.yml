@@ -4,6 +4,8 @@ Slince\Shopify\Manager\Order\Order:
             type: integer
         email:
             type: string
+        customer_locale:
+            type: string
         closedAt:
             type: DateTime<'Y-m-d\TH:i:sP'>
         createdAt:
@@ -22,6 +24,8 @@ Slince\Shopify\Manager\Order\Order:
             type: string
         test:
             type: boolean
+        totalTipReceived:
+            type: float
         totalPrice:
             type: float
         subtotalPrice:

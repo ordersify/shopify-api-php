@@ -6,6 +6,8 @@ Slince\Shopify\Manager\Customer\Customer:
             type: string
         acceptsMarketing:
             type: boolean
+        currency:
+            type: string
         createdAt:
             type: DateTime<'Y-m-d\TH:i:sP'>
         updatedAt:
@@ -30,6 +32,8 @@ Slince\Shopify\Manager\Customer\Customer:
             type: string
         taxExempt:
             type: boolean
+        taxExemptions:
+            type: array
         phone:
             type: string
         tags:

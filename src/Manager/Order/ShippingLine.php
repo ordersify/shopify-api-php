@@ -26,6 +26,21 @@ class ShippingLine extends Model
     protected $price;
 
     /**
+     * @var object
+     */
+    protected $priceSet;
+
+    /**
+     * @var float
+     */
+    protected $discountedPrice;
+
+    /**
+     * @var object
+     */
+    protected $discountedPriceSet;
+
+    /**
      * @var string
      */
     protected $source;
@@ -49,6 +64,66 @@ class ShippingLine extends Model
      * @var string
      */
     protected $requestedFulfillmentServiceId;
+
+    /**
+     * @return string
+     */
+    public function getPriceSet()
+    {
+        return $this->priceSet;
+    }
+
+    /**
+     * @param string $priceSet
+     *
+     * @return ShippingLine
+     */
+    public function setPriceSet($priceSet)
+    {
+        $this->priceSet = $priceSet;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountedPrice()
+    {
+        return $this->discountedPrice;
+    }
+
+    /**
+     * @param string $discountedPrice
+     *
+     * @return ShippingLine
+     */
+    public function setDiscountedPrice($discountedPrice)
+    {
+        $this->discountedPrice = $discountedPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountedPriceSet()
+    {
+        return $this->discountedPriceSet;
+    }
+
+    /**
+     * @param string $discountedPriceSet
+     *
+     * @return ShippingLine
+     */
+    public function setDiscountedPriceSet($discountedPriceSet)
+    {
+        $this->discountedPriceSet = $discountedPriceSet;
+
+        return $this;
+    }
 
     /**
      * @return string

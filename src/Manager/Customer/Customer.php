@@ -35,6 +35,11 @@ class Customer extends Model
     protected $createdAt;
 
     /**
+     * @var string
+     */
+    protected $currency;
+
+    /**
      * @var \DateTimeInterface
      */
     protected $updatedAt;
@@ -88,6 +93,11 @@ class Customer extends Model
      * @var bool
      */
     protected $taxExempt;
+
+    /**
+     * @var array
+     */
+    protected $taxExemptions;
 
     /**
      * @var string
@@ -170,6 +180,26 @@ class Customer extends Model
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     *
+     * @return Customer
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
 
         return $this;
     }
@@ -390,6 +420,26 @@ class Customer extends Model
     public function setTaxExempt($taxExempt)
     {
         $this->taxExempt = $taxExempt;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTaxExemptions()
+    {
+        return $this->taxExemptions;
+    }
+
+    /**
+     * @param array $taxExemptions
+     *
+     * @return Customer
+     */
+    public function setTaxExemptions($taxExemptions)
+    {
+        $this->taxExemptions = $taxExemptions;
 
         return $this;
     }
