@@ -350,7 +350,7 @@ class Client
             $response = $this->getHttpClient()->send($request, $options);
             $this->lastResponse = $response;
         } catch (RequestException $exception) {
-            if ($exception->getResponse()->getStatusCode() === 429) {
+            if (!is_null($exception->getResponse()) && $exception->getResponse()->getStatusCode() === 429) {
                 usleep(1000000 * 20); // Sleep 20 seconds before running when crashing the error 429
                 return $this->sendRequest($request, $options);
             }
