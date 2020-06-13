@@ -12,18 +12,19 @@
 namespace Slince\Shopify;
 
 use Doctrine\Common\Inflector\Inflector;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Request;
-use Slince\Di\Container;
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Slince\Di\Container;
 use Slince\Shopify\Common\Manager\ManagerInterface;
-use Slince\Shopify\Exception\InvalidArgumentException;
-use GuzzleHttp\Exception\RequestException;
 use Slince\Shopify\Exception\ClientException;
+use Slince\Shopify\Exception\InvalidArgumentException;
 use Slince\Shopify\Exception\RuntimeException;
 use Slince\Shopify\Hydrator\Hydrator;
+use Slince\Shopify\Traits\ResponseTransform;
 
 /**
  * @method Manager\Article\ArticleManagerInterface getArticleManager
@@ -65,6 +66,8 @@ use Slince\Shopify\Hydrator\Hydrator;
  */
 class Client
 {
+    use ResponseTransform;
+
     const NAME = 'SlinceShopifyClient';
     const VERSION = '2.4.0';
 
@@ -146,7 +149,7 @@ class Client
     ];
 
     protected $metaDirs = [
-        'Slince\Shopify' => __DIR__.'/../config/serializer'
+        'Slince\Shopify' => __DIR__ . '/../config/serializer',
     ];
 
     /**
@@ -203,7 +206,7 @@ class Client
      */
     public function setShop($shop)
     {
-        if (!preg_match('/^[a-zA-Z0-9\-]{3,100}\.myshopify\.(?:com|io)$/', $shop)) {
+        if (! preg_match('/^[a-zA-Z0-9\-]{3,100}\.myshopify\.(?:com|io)$/', $shop)) {
             throw new InvalidArgumentException(
                 'Shop name should be 3-100 letters, numbers, or hyphens e.g. your-store.myshopify.com'
             );
@@ -250,9 +253,10 @@ class Client
      * Perform a GET request.
      *
      * @param string $resource
-     * @param array  $query
+     * @param array $query
      *
      * @return array
+     * @throws GuzzleException
      */
     public function get($resource, $query = [])
     {
@@ -265,16 +269,17 @@ class Client
      * Perform a POST request.
      *
      * @param string $resource
-     * @param array  $data
-     * @param array  $query
+     * @param array $data
+     * @param array $query
      *
      * @return array
+     * @throws GuzzleException
      */
     public function post($resource, $data, $query = [])
     {
         return $this->doRequest('POST', $resource, [
             'query' => $query,
-            'json' => $data,
+            'json'  => $data,
         ]);
     }
 
@@ -282,16 +287,17 @@ class Client
      * Perform a PUT request.
      *
      * @param string $resource
-     * @param array  $data
-     * @param array  $query
+     * @param array $data
+     * @param array $query
      *
      * @return array
+     * @throws GuzzleException
      */
     public function put($resource, $data, $query = [])
     {
         return $this->doRequest('PUT', $resource, [
             'query' => $query,
-            'json' => $data,
+            'json'  => $data,
         ]);
     }
 
@@ -299,13 +305,73 @@ class Client
      * Perform a DELETE request.
      *
      * @param string $resource
-     * @param array  $query
+     * @param array $query
+     * @throws GuzzleException
      */
     public function delete($resource, $query = [])
     {
         $this->doRequest('DELETE', $resource, [
-            'query' => $query
+            'query' => $query,
         ]);
+    }
+
+    /**
+     * Performa a GraphQL request
+     *
+     * @param string $query
+     * @param array $variables
+     * @return array
+     * @throws GuzzleException
+     */
+    public function graphql($query, array $variables = [])
+    {
+        // Build the request
+        $body = ['query' => $query];
+        if (count($variables) > 0) {
+            $body['variables'] = $variables;
+        }
+        $json = \GuzzleHttp\json_encode($body);
+        $request = new Request(
+            'POST',
+            $this->buildUrl('graphql'),
+            [
+                'Content-Type'                  => 'application/json',
+                'User-Agent'                    => static::NAME . '/' . static::VERSION,
+                'X-GraphQL-Cost-Include-Fields' => true,
+            ],
+            $json
+        );
+        $request = $this->credential->applyToRequest($request);
+        try {
+            $response = $this->getHttpClient()->send($request);
+            $this->lastResponse = $response;
+        } catch (RequestException $exception) {
+            // Retry when 429
+            $resp = $exception->getResponse();
+            if ($resp) {
+                $rawBody = $resp->getBody()->getContents();
+                $body = $this->toResponse($rawBody);
+                if (isset($body['extensions']['cost']['throttleStatus']['currentlyAvailable'])) {
+                    $currentAvailable = $body['extensions']['cost']['throttleStatus']['currentlyAvailable'];
+                    if ($currentAvailable >= 1000) {
+                        usleep(1000000 * 2); // Sleep 20 seconds before running when crashing the error 429
+                        return $this->graphql($query, $variables);
+                    }
+                }
+            }
+
+            $exception = new ClientException($request, $exception->getResponse(), $exception->getMessage(), $exception->getCode());
+            throw $exception;
+        }
+
+        $responseAccess = $this->toResponse($response->getBody()->getContents());
+
+        return [
+            'errors'   => $responseAccess->hasErrors() ? $responseAccess->getErrors() : false,
+            'response' => $response,
+            'status'   => $response->getStatusCode(),
+            'body'     => $responseAccess,
+        ];
     }
 
     /**
@@ -315,6 +381,7 @@ class Client
      * @param string $resource
      * @param array $options
      * @return array
+     * @throws GuzzleException
      */
     protected function doRequest($method, $resource, $options = [])
     {
@@ -341,17 +408,14 @@ class Client
      */
     public function sendRequest(RequestInterface $request, array $options = [])
     {
-        if (static::$delayNextRequest) {
-            usleep(1000000 * rand(3, 10));
-        }
         $request = $request->withHeader('User-Agent', static::NAME . '/' . static::VERSION);
         $request = $this->credential->applyToRequest($request);
         try {
             $response = $this->getHttpClient()->send($request, $options);
             $this->lastResponse = $response;
         } catch (RequestException $exception) {
-            if (!is_null($exception->getResponse()) && $exception->getResponse()->getStatusCode() === 429) {
-                usleep(1000000 * 20); // Sleep 20 seconds before running when crashing the error 429
+            if (! is_null($exception->getResponse()) && $exception->getResponse()->getStatusCode() === 429) {
+                usleep(1000000 * 2); // Sleep 20 seconds before running when crashing the error 429
                 return $this->sendRequest($request, $options);
             }
             $exception = new ClientException($request, $exception->getResponse(), $exception->getMessage(), $exception->getCode());
@@ -392,12 +456,12 @@ class Client
     protected function applyOptions(array $options)
     {
         isset($options['httpClient']) && $this->httpClient = $options['httpClient'];
-        if (!isset($options['metaCacheDir'])) {
+        if (! isset($options['metaCacheDir'])) {
             throw new InvalidArgumentException('You must provide option "metaCacheDir"');
         }
         $this->metaCacheDir = $options['metaCacheDir'];
         if (isset($options['apiVersion'])) {
-            if (!preg_match('/^[0-9]{4}-[0-9]{2}$|^unstable$/', $options['apiVersion'])) {
+            if (! preg_match('/^[0-9]{4}-[0-9]{2}$|^unstable$/', $options['apiVersion'])) {
                 throw new InvalidArgumentException('Version string must be of YYYY-MM or unstable');
             }
             $this->apiVersion = $options['apiVersion'];
@@ -440,7 +504,7 @@ class Client
      */
     public function addServiceClass($serviceClass)
     {
-        if (!is_subclass_of($serviceClass, ManagerInterface::class)) {
+        if (! is_subclass_of($serviceClass, ManagerInterface::class)) {
             throw new InvalidArgumentException(sprintf('The service class "%s" should implement "ManagerInterface"', $serviceClass));
         }
         $this->serviceClass[] = $serviceClass;
