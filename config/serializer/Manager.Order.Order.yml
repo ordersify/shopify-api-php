@@ -104,6 +104,10 @@ Slince\Shopify\Manager\Order\Order:
             type: array<Slince\Shopify\Manager\Order\TaxLine>
         tags:
             type: string
+        customerLocale:
+            type: string
+        presentmentCurrency:
+            type: string
         contactEmail:
             type: string
         orderStatusUrl:

@@ -1,0 +1,6 @@
+Slince\Shopify\Manager\PriceSet\PresentmentMoney:
+    properties:
+        amount:
+            type: float
+        currencyCode:
+            type: string

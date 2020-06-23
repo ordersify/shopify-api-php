@@ -21,6 +21,11 @@ class DiscountAllocation extends Model
     protected $amount;
 
     /**
+     * @var float
+     */
+    protected $value;
+
+    /**
      * @var string
      */
     protected $discountApplicationIndex;

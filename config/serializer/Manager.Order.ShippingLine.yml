@@ -7,11 +7,17 @@ Slince\Shopify\Manager\Order\ShippingLine:
         price:
             type: float
         price_set:
-            type: object
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        priceSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
         discounted_price:
             type: float
+        discountedPrice:
+            type: float
         discounted_price_set:
-            type: object
+            type: string
+        discountedPriceSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
         source:
             type: string
         title:

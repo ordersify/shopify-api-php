@@ -1,0 +1,6 @@
+Slince\Shopify\Manager\PriceSet\PriceSet:
+    properties:
+        shopMoney:
+            type: Slince\Shopify\Manager\PriceSet\ShopMoney
+        presentmentMoney:
+            type: Slince\Shopify\Manager\PriceSet\PresentmentMoney

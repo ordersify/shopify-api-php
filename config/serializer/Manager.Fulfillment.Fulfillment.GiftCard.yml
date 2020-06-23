@@ -1,0 +1,8 @@
+Slince\Shopify\Manager\Fulfillment\Fulfillment\GiftCard:
+    properties:
+        id:
+            type: integer
+        lineItemId:
+            type: string
+        maskedCode:
+            type: string
