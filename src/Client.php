@@ -416,7 +416,7 @@ class Client
         } catch (RequestException $exception) {
             if (! is_null($exception->getResponse())) {
                 $statusCode = $exception->getResponse()->getStatusCode();
-                if ($statusCode === 429 || $statusCode === 502 || $statusCode === 520) {
+                if ($statusCode === 429 || $statusCode === 502 || $statusCode === 520 || $statusCode === 504) {
                     usleep(1000000 * 2); // Sleep 20 seconds before running when crashing the error 429
                     return $this->sendRequest($request, $options);
                 }
