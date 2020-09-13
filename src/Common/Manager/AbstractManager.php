@@ -13,9 +13,12 @@ namespace Slince\Shopify\Common\Manager;
 
 use Slince\Shopify\Client;
 use Slince\Shopify\Common\Model\ModelInterface;
+use Slince\Shopify\Traits\InflectorTrait;
 
 abstract class AbstractManager implements ManagerInterface
 {
+    use InflectorTrait;
+    
     /**
      * @var Client
      */

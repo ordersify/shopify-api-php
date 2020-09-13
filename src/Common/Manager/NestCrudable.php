@@ -11,7 +11,6 @@
 
 namespace Slince\Shopify\Common\Manager;
 
-use Doctrine\Inflector\Inflector;
 use Slince\Shopify\Common\CursorBasedPagination;
 use Slince\Shopify\Common\Model\ModelInterface;
 
@@ -134,9 +133,9 @@ abstract class NestCrudable extends AbstractManager
 
     protected function createPartialResourceUrlForList($parentId)
     {
-        return Inflector::pluralize($this->getParentResourceName())
+        return $this->getInflector()->pluralize($this->getParentResourceName())
             .'/'.$parentId
-            .'/'.Inflector::pluralize($this->getResourceName());
+            .'/'.$this->getInflector()->pluralize($this->getResourceName());
     }
 
     protected function createPartialResourceUrlForView($parentId, $id)

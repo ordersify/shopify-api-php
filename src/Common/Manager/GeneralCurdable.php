@@ -11,7 +11,6 @@
 
 namespace Slince\Shopify\Common\Manager;
 
-use Doctrine\Inflector\Inflector;
 use Slince\Shopify\Common\CursorBasedPagination;
 use Slince\Shopify\Common\Model\ModelInterface;
 
@@ -26,7 +25,7 @@ abstract class GeneralCurdable extends AbstractManager
      */
     public function findAll(array $query = [])
     {
-        $data = $this->client->get(Inflector::pluralize($this->getResourceName()), $query);
+        $data = $this->client->get($this->getInflector()->pluralize($this->getResourceName()), $query);
 
         return $this->createMany(reset($data));
     }
@@ -41,7 +40,7 @@ abstract class GeneralCurdable extends AbstractManager
      */
     public function paginate(array $query = [])
     {
-        $resource = Inflector::pluralize($this->getResourceName());
+        $resource = $this->getInflector()->pluralize($this->getResourceName());
 
         return new CursorBasedPagination($this, $resource, $query);
     }
@@ -55,7 +54,7 @@ abstract class GeneralCurdable extends AbstractManager
      */
     public function find($id)
     {
-        $data = $this->client->get(Inflector::pluralize($this->getResourceName()).'/'.$id);
+        $data = $this->client->get($this->getInflector()->pluralize($this->getResourceName()).'/'.$id);
 
         return $this->fromArray(reset($data));
     }
@@ -67,7 +66,7 @@ abstract class GeneralCurdable extends AbstractManager
      */
     public function remove($id)
     {
-        $this->client->delete(Inflector::pluralize($this->getResourceName()).'/'.$id);
+        $this->client->delete($this->getInflector()->pluralize($this->getResourceName()).'/'.$id);
     }
 
     /**
@@ -80,7 +79,7 @@ abstract class GeneralCurdable extends AbstractManager
      */
     public function update($id, array $data)
     {
-        $data = $this->client->put(Inflector::pluralize($this->getResourceName()).'/'.$id, [$this->getResourceName() => $data]);
+        $data = $this->client->put($this->getInflector()->pluralize($this->getResourceName()).'/'.$id, [$this->getResourceName() => $data]);
 
         return $this->fromArray(reset($data));
     }
@@ -94,7 +93,7 @@ abstract class GeneralCurdable extends AbstractManager
      */
     public function create(array $data)
     {
-        $data = $this->client->post(Inflector::pluralize($this->getResourceName()), [$this->getResourceName() => $data]);
+        $data = $this->client->post($this->getInflector()->pluralize($this->getResourceName()), [$this->getResourceName() => $data]);
 
         return $this->fromArray(reset($data));
     }
@@ -108,7 +107,7 @@ abstract class GeneralCurdable extends AbstractManager
      */
     public function count(array $query = [])
     {
-        $partial = Inflector::pluralize($this->getResourceName()).'/count';
+        $partial = $this->getInflector()->pluralize($this->getResourceName()).'/count';
 
         return $this->client->get($partial, $query)['count'];
     }

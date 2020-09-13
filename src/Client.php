@@ -24,6 +24,7 @@ use Slince\Shopify\Exception\ClientException;
 use Slince\Shopify\Exception\InvalidArgumentException;
 use Slince\Shopify\Exception\RuntimeException;
 use Slince\Shopify\Hydrator\Hydrator;
+use Slince\Shopify\Traits\InflectorTrait;
 use Slince\Shopify\Traits\ResponseTransform;
 
 /**
@@ -66,7 +67,7 @@ use Slince\Shopify\Traits\ResponseTransform;
  */
 class Client
 {
-    use ResponseTransform;
+    use ResponseTransform, InflectorTrait;
 
     const NAME = 'SlinceShopifyClient';
     const VERSION = '2.4.0';
@@ -184,7 +185,9 @@ class Client
         if ('Manager' === substr($name, -7)) {
             $serviceName = substr($name, 3, -7);
 
-            return $this->container->get(Inflector::tableize(Inflector::pluralize($serviceName)));
+            return $this->container->get($this->getInflector()->tableize(
+                $this->getInflector()->pluralize($serviceName))
+            );
         }
         throw new \InvalidArgumentException(sprintf('The method "%s" is not exists', $name));
     }
