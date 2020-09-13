@@ -11,7 +11,7 @@
 
 namespace Slince\Shopify\Common\Manager;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
 use Slince\Shopify\Common\CursorBasedPagination;
 use Slince\Shopify\Common\Model\ModelInterface;
 
