@@ -351,15 +351,19 @@ class Client
         } catch (RequestException $exception) {
             // Retry when 429
             $resp = $exception->getResponse();
-            if ($resp) {
+            if (!is_null($resp)) {
                 $rawBody = $resp->getBody()->getContents();
                 $body = $this->toResponse($rawBody);
+                $statusCode = $exception->getResponse()->getStatusCode();
                 if (isset($body['extensions']['cost']['throttleStatus']['currentlyAvailable'])) {
                     $currentAvailable = $body['extensions']['cost']['throttleStatus']['currentlyAvailable'];
-                    if ($currentAvailable >= 1000) {
+                    if ($currentAvailable <= 0) {
                         usleep(1000000 * 2); // Sleep 20 seconds before running when crashing the error 429
                         return $this->graphql($query, $variables);
                     }
+                } elseif ($statusCode === 429 || $statusCode === 502 || $statusCode === 520 || $statusCode === 504) {
+                    usleep(1000000 * 2); // Sleep 20 seconds before running when crashing the error 429
+                    return $this->graphql($query, $variables);
                 }
             }
 
