@@ -22,9 +22,6 @@ class AccessToken
 
     public function __construct($token)
     {
-        if (0 === preg_match('/^([a-zA-Z0-9_]{10,100})$/', $token)) {
-            throw new InvalidArgumentException('Access token should be between 10 and 100 letters and numbers');
-        }
         $this->token = $token;
     }
 
