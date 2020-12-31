@@ -12,6 +12,7 @@
 namespace Slince\Shopify\Manager\Order;
 
 use Slince\Shopify\Common\Model\Model;
+use Slince\Shopify\Manager\PriceSet\PriceSet;
 
 class LineItem extends Model
 {
@@ -124,6 +125,90 @@ class LineItem extends Model
      * @var bool
      */
     protected $custom;
+
+    /**
+     * @var OriginLocation $originLocation
+     */
+    protected $originLocation;
+
+    /**
+     * @var Duty[] $duties
+     */
+    protected $duties;
+
+    /**
+     * @var PriceSet $priceSet
+     */
+    protected $priceSet;
+
+    /**
+     * @var PriceSet $totalDiscountSet
+     */
+    protected $totalDiscountSet;
+
+    /**
+     * @return PriceSet
+     */
+    public function getTotalDiscountSet()
+    {
+        return $this->totalDiscountSet;
+    }
+
+    /**
+     * @param array $totalDiscountSet
+     */
+    public function setTotalDiscountSet($totalDiscountSet)
+    {
+        $this->totalDiscountSet = $totalDiscountSet;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getPriceSet()
+    {
+        return $this->priceSet;
+    }
+
+    /**
+     * @param array $priceSet
+     */
+    public function setPriceSet($priceSet)
+    {
+        $this->priceSet = $priceSet;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOriginLocation()
+    {
+        return $this->originLocation;
+    }
+
+    /**
+     * @param array $originLocation
+     */
+    public function setOriginLocation($originLocation)
+    {
+        $this->originLocation = $originLocation;
+    }
+
+    /**
+     * @return Duty[]
+     */
+    public function getDuties()
+    {
+        return $this->duties;
+    }
+
+    /**
+     * @param Duty[] $duties
+     */
+    public function setDuties($duties)
+    {
+        $this->duties = duties;
+    }
 
     /**
      * @return bool

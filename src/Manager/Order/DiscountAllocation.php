@@ -12,6 +12,7 @@
 namespace Slince\Shopify\Manager\Order;
 
 use Slince\Shopify\Common\Model\Model;
+use Slince\Shopify\Manager\PriceSet\PriceSet;
 
 class DiscountAllocation extends Model
 {
@@ -29,6 +30,31 @@ class DiscountAllocation extends Model
      * @var string
      */
     protected $discountApplicationIndex;
+
+    /**
+     * @var PriceSet
+     */
+    protected $amountSet;
+
+    /**
+     * @return string
+     */
+    public function getAmountSet()
+    {
+        return $this->amountSet;
+    }
+
+    /**
+     * @param PriceSet $amountSet
+     *
+     * @return DiscountAllocation
+     */
+    public function setAmountSet($amountSet)
+    {
+        $this->amountSet = $amountSet;
+
+        return $this;
+    }
 
     /**
      * @return string

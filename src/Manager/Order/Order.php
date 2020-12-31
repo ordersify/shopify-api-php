@@ -15,6 +15,7 @@ use Slince\Shopify\Common\Model\Model;
 use Slince\Shopify\Common\Model\AdminGraphqlApiId;
 use Slince\Shopify\Manager\Customer\Customer;
 use Slince\Shopify\Manager\Fulfillment\Fulfillment;
+use Slince\Shopify\Manager\PriceSet\PriceSet;
 use Slince\Shopify\Manager\Refund\Refund;
 use Slince\Shopify\Manager\Transaction\Transaction;
 
@@ -328,7 +329,7 @@ class Order extends Model
     protected $transactions;
 
     /**
-     * @var array
+     * @var PaymentDetails
      */
     protected $paymentDetails;
 
@@ -346,6 +347,403 @@ class Order extends Model
      * @var string
      */
     protected $customerLocale;
+
+    protected $currentTotalPrice;
+
+    protected $currentTotalPriceSet;
+
+    protected $totalPriceSet;
+
+    protected $totalDiscountsSet;
+
+    protected $totalShippingPriceSet;
+
+    protected $totalTaxSet;
+
+    protected $totalLineItemsPriceSet;
+
+    protected $totalOutstanding;
+
+    protected $subtotalPriceSet;
+
+    protected $originalTotalDutiesSet;
+
+    protected $currentTotalDiscounts;
+
+    protected $currentTotalDiscountsSet;
+
+    protected $currentTotalDuties;
+
+    protected $currentTotalDutiesSet;
+
+    protected $currentSubtotalPrice;
+
+    protected $currentSubtotalPriceSet;
+
+    protected $currentTotalTax;
+
+    protected $currentTotalTaxSet;
+
+    /**
+     * @return float
+     */
+    public function getCurrentTotalDiscounts()
+    {
+        return $this->currentTotalDiscounts;
+    }
+
+    /**
+     * @param float $currentTotalDiscounts
+     *
+     * @return Order
+     */
+    public function setCurrentTotalDiscounts($currentTotalDiscounts)
+    {
+        $this->currentTotalDiscounts = $currentTotalDiscounts;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getCurrentTotalDiscountsSet()
+    {
+        return $this->currentTotalDiscountsSet;
+    }
+
+    /**
+     * @param PriceSet $currentTotalDiscountsSet
+     *
+     * @return Order
+     */
+    public function setCurrentTotalDiscountsSet($currentTotalDiscountsSet)
+    {
+        $this->currentTotalDiscountsSet = $currentTotalDiscountsSet;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCurrentTotalDuties()
+    {
+        return $this->currentTotalDuties;
+    }
+
+    /**
+     * @param float $currentTotalDuties
+     *
+     * @return Order
+     */
+    public function setCurrentTotalDuties($currentTotalDuties)
+    {
+        $this->currentTotalDuties= $currentTotalDuties;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getCurrentTotalDutiesSet()
+    {
+        return $this->currentTotalDutiesSet;
+    }
+
+    /**
+     * @param PriceSet $currentTotalDutiesSet
+     *
+     * @return Order
+     */
+    public function setCurrentTotalDutiesSet($currentTotalDutiesSet)
+    {
+        $this->currentTotalDutiesSet = $currentTotalDutiesSet;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getCurrentSubtotalPrice()
+    {
+        return $this->currentSubtotalPrice;
+    }
+
+    /**
+     * @param PriceSet $currentSubtotalPrice
+     *
+     * @return Order
+     */
+    public function setCurrentSubtotalPrice($currentSubtotalPrice)
+    {
+        $this->currentSubtotalPrice = $currentSubtotalPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getCurrentSubtotalPriceSet()
+    {
+        return $this->currentSubtotalPriceSet;
+    }
+
+    /**
+     * @param PriceSet $currentSubtotalPriceSet
+     *
+     * @return Order
+     */
+    public function setCurrentSubtotalPriceSet($currentSubtotalPriceSet)
+    {
+        $this->currentSubtotalPriceSet = $currentSubtotalPriceSet;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCurrentTotalTax()
+    {
+        return $this->currentTotalTax;
+    }
+
+    /**
+     * @param PriceSet $currentTotalTaxSet
+     *
+     * @return Order
+     */
+    public function setCurrentTotalTax($currentTotalTax)
+    {
+        $this->currentTotalTax = $currentTotalTax;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getCurrentTotalTaxSet()
+    {
+        return $this->currentTotalTaxSet;
+    }
+
+    /**
+     * @param PriceSet $currentTotalTaxSet
+     *
+     * @return Order
+     */
+    public function setCurrentTotalTaxSet($currentTotalTaxSet)
+    {
+        $this->currentTotalTaxSet = $currentTotalTaxSet;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getTotalShippingPriceSet()
+    {
+        return $this->totalShippingPriceSet;
+    }
+
+    /**
+     * @param PriceSet $totalShippingPriceSet
+     *
+     * @return Order
+     */
+    public function setTotalShippingSet($totalShippingPriceSet)
+    {
+        $this->totalShippingPriceSet = $totalShippingPriceSet;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getTotalTaxSet()
+    {
+        return $this->totalTaxSet;
+    }
+
+    /**
+     * @param PriceSet $totalTaxSet
+     *
+     * @return Order
+     */
+    public function setTotalTaxSet($totalTaxSet)
+    {
+        $this->totalTaxSet = $totalTaxSet;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getTotalLineItemsPriceSet()
+    {
+        return $this->totalLineItemsPriceSet;
+    }
+
+    /**
+     * @param PriceSet $totalTaxSet
+     *
+     * @return Order
+     */
+    public function setTotalLineItemsPriceSet($totalLineItemsPriceSet)
+    {
+        $this->totalLineItemsPriceSet = $totalLineItemsPriceSet;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalOutstanding()
+    {
+        return $this->totalOutstanding;
+    }
+
+    /**
+     * @param float $totalOutstanding
+     *
+     * @return Order
+     */
+    public function setTotalOutstanding($totalOutstanding)
+    {
+        $this->totalOutstanding = $totalOutstanding;
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getSubtotalPriceSet()
+    {
+        return $this->subtotalPriceSet;
+    }
+
+    /**
+     * @param PriceSet $subtotalPriceSet
+     *
+     * @return Order
+     */
+    public function setSubtotalOutstanding($subtotalPriceSet)
+    {
+        $this->subtotalPriceSet = $subtotalPriceSet;
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getOriginalTotalDutiesSet()
+    {
+        return $this->originalTotalDutiesSet;
+    }
+
+    /**
+     * @param PriceSet $subtotalPriceSet
+     *
+     * @return Order
+     */
+    public function setOriginalTotalDutiesSet($originalTotalDutiesSet)
+    {
+        $this->originalTotalDutiesSet = $originalTotalDutiesSet;
+        return $this;
+    }
+
+
+
+
+
+    /**
+     * @return string
+     */
+    public function getCurrentTotalPrice()
+    {
+        return $this->currentTotalPrice;
+    }
+
+    /**
+     * @param string $customerLocale
+     *
+     * @return Order
+     */
+    public function setCurrentTotalPrice($currentTotalPrice)
+    {
+        $this->currentTotalPrice = $currentTotalPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getCurrentTotalPriceSet()
+    {
+        return $this->currentTotalPriceSet;
+    }
+
+    /**
+     * @param PriceSet $currentTotalPriceSet
+     *
+     * @return Order
+     */
+    public function setCurrentTotalPriceSet($currentTotalPriceSet)
+    {
+        $this->currentTotalPriceSet = $currentTotalPriceSet;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getTotalPriceSet()
+    {
+        return $this->totalPriceSet;
+    }
+
+    /**
+     * @param PriceSet $totalPriceSet
+     *
+     * @return Order
+     */
+    public function setTotalPriceSet($totalPriceSet)
+    {
+        $this->totalPriceSet = $totalPriceSet;
+
+        return $this;
+    }
+
+    /**
+     * @return PriceSet
+     */
+    public function getTotalDiscountsSet()
+    {
+        return $this->totalDiscountsSet;
+    }
+
+    /**
+     * @param PriceSet $totalDiscountsSet
+     *
+     * @return Order
+     */
+    public function setTotalDiscountsSet($totalDiscountsSet)
+    {
+        $this->totalDiscountsSet = $totalDiscountsSet;
+
+        return $this;
+    }
 
     /**
      * @return string
@@ -1341,7 +1739,7 @@ class Order extends Model
     }
 
     /**
-     * @return array
+     * @return TaxLine[]
      */
     public function getTaxLines()
     {
@@ -1561,7 +1959,7 @@ class Order extends Model
     }
 
     /**
-     * @return array
+     * @return PaymentDetails
      */
     public function getPaymentDetails()
     {
@@ -1569,7 +1967,7 @@ class Order extends Model
     }
 
     /**
-     * @param array $paymentDetails
+     * @param PaymentDetails $paymentDetails
      *
      * @return Order
      */

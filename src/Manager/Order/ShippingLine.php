@@ -12,6 +12,7 @@
 namespace Slince\Shopify\Manager\Order;
 
 use Slince\Shopify\Common\Model\Model;
+use Slince\Shopify\Manager\PriceSet\PriceSet;
 
 class ShippingLine extends Model
 {
@@ -66,7 +67,7 @@ class ShippingLine extends Model
     protected $requestedFulfillmentServiceId;
 
     /**
-     * @return string
+     * @return PriceSet
      */
     public function getPriceSet()
     {
@@ -74,7 +75,7 @@ class ShippingLine extends Model
     }
 
     /**
-     * @param string $priceSet
+     * @param PriceSet $priceSet
      *
      * @return ShippingLine
      */
@@ -106,7 +107,7 @@ class ShippingLine extends Model
     }
 
     /**
-     * @return string
+     * @return PriceSet
      */
     public function getDiscountedPriceSet()
     {
@@ -114,7 +115,7 @@ class ShippingLine extends Model
     }
 
     /**
-     * @param string $discountedPriceSet
+     * @param PriceSet $discountedPriceSet
      *
      * @return ShippingLine
      */

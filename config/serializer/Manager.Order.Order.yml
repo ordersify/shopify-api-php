@@ -136,3 +136,39 @@ Slince\Shopify\Manager\Order\Order:
             type: array<Slince\Shopify\Manager\Order\DiscountApplication>
         customer:
             type: Slince\Shopify\Manager\Customer\Customer
+        currentTotalPrice:
+            type: float
+        currentTotalPriceSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        totalPriceSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        totalDiscountsSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        totalShippingPriceSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        totalTaxSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        totalLineItemsPriceSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        subtotalPriceSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        originalTotalDutiesSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        currentTotalDiscounts:
+            type: float
+        currentTotalDiscountsSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        currentTotalDuties:
+            type: float
+        currentTotalDutiesSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        currentSubtotalPrice:
+            type: float
+        currentSubtotalPriceSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        currentTotalTax:
+            type: float
+        currentTotalTaxSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        totalOutstanding:
+            type: float

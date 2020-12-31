@@ -11,8 +11,6 @@
 
 namespace Slince\Shopify;
 
-use Slince\Shopify\Exception\InvalidArgumentException;
-
 class AccessToken
 {
     /**

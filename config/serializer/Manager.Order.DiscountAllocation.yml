@@ -4,3 +4,5 @@ Slince\Shopify\Manager\Order\DiscountAllocation:
             type: string
         discountApplicationIndex:
             type: integer
+        amountSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet

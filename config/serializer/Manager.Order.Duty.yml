@@ -1,0 +1,12 @@
+Slince\Shopify\Manager\Order\OriginLocation:
+    properties:
+        harmonizedSystemCode:
+            type: string
+        countryCodeOfOrigin:
+            type: string
+        shopMoney:
+            type: Slince\Shopify\Manager\PriceSet\ShopMoney
+        presentmentMoney:
+            type: Slince\Shopify\Manager\PriceSet\PresentmentMoney
+        taxLines:
+            type: array<Slince\Shopify\Manager\Order\TaxLine>

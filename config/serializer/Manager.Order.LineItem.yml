@@ -46,3 +46,11 @@ Slince\Shopify\Manager\Order\LineItem:
             type: array
         custom:
             type: boolean
+        originLocation:
+            type: Slince\Shopify\Manager\Order\OriginLocation
+        duties:
+            type: array<Slince\Shopify\Manager\Order\Duty>
+        priceSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
+        totalDiscountSet:
+            type: Slince\Shopify\Manager\PriceSet\PriceSet
