@@ -431,7 +431,7 @@ class Client
             $exception = new ClientException($request, $exception->getResponse(), $exception->getMessage(), $exception->getCode());
             throw $exception;
         }
-        list($callsMade, $callsLimit) = explode('/', $response->getHeaderLine('http_x_shopify_shop_api_call_limit'));
+        list($callsMade, $callsLimit) = explode('/', $response->getHeaderLine('x-shopify-shop-api-call-limit'));
         static::$delayNextRequest = $callsMade / $callsLimit >= 0.8;
         return $response;
     }
